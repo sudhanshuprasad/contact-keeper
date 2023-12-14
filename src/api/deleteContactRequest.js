@@ -5,7 +5,8 @@ const deleteContactRequest = (contact, token) => {
         method: 'DELETE',
         headers: {
             Authorization: `${token}`,
-            "Content-Type": 'application/json'
+            "Content-Type": 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
     })
 }

@@ -4,7 +4,9 @@ const loginRequest = (password) => {
     return fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
-            "Content-Type": 'application/json'
+            "Content-Type": 'application/json',
+            'Accept': '*/*',
+            'Access-Control-Allow-Origin': '*/*',
         },
         body: JSON.stringify({
             password,

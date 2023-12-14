@@ -11,7 +11,7 @@ export const ContactPage = () => {
     console.log("process.env.REACT_APP_API_URL")
 
     const { isLoading, data: Contacts } = useQuery('Contacts', () => {
-        readContactRequest(token)
+        readContactRequest(localStorage.getItem('token'))
     });
 
     return (

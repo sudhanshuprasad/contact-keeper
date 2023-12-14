@@ -14,6 +14,7 @@ export const LoginPage = () => {
         loginRequest(password)
             .then(({ token }) => {
                 setToken(token);
+                localStorage.setItem("token", token);
                 navigate('/');
             })
             .catch((err) => {

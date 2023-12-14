@@ -5,7 +5,13 @@ const createContactRequest = (contact, token) => {
         method: 'POST',
         headers: {
             Authorization: `${token}`,
-            "Content-Type": 'application/json'
+            "Content-Type": 'application/json',
+
+            headers: {
+                'Accept': '*/*',
+                'Access-Control-Allow-Origin': '*/*',
+            }
+
         },
         body: JSON.stringify({
             text: contact.text,

@@ -6,7 +6,8 @@ const readContactRequest = (token) => {
         method: 'GET',
         headers: {
             Authorization: `${token}`,
-            "Content-Type": 'application/json'
+            "Content-Type": 'application/json',
+            'Access-Control-Allow-Origin': '*',
         }
     })
         .then(response => response.json())
