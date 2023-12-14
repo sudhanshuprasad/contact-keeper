@@ -1,12 +1,62 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Edit_Delete from './EditDelete'
 import Contact from './Contact'
 
-let data = {}
+let data = []
+const host = 'http://localhost:8080'
 
 const Contacts = () => {
 
-    const [contacts, setContacts] = useState(data);
+    useEffect(() => {
+        let url = `${host}/contacts`;
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': '*/*',
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                console.log('data ', data)
+                setContacts(data)
+            });
+
+    }, [])
+
+    const check = ()=>{}
+
+    const [contacts, setContacts] = useState([]);
+
+    const updateContact = (id, data) => {
+        let newData = contacts
+        contacts.map((element, index) =>{
+            if(element._id===id){
+                newData[index].text=data?.name
+                newData[index].PhNumber=data?.PhNumber
+                newData[index].email=data?.email
+                console.log(element)
+            }
+        })
+        setContacts(newData)
+    }
+
+    const deleteContact = (id) => {
+        console.log("deleting contact")
+        let newData=contacts.filter((element)=>{
+            console.log(id)
+            if(element._id===id){
+                console.log(element)
+                return false;
+            }
+            else{
+                return true;
+            }
+        })
+        setContacts(newData)
+    }
 
     return (
         <>
@@ -14,16 +64,16 @@ const Contacts = () => {
 
                 <div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-4">
-                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">The Contact List</h5>
-                        {/* <a href="#" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                        View all
-                    </a> */}
+                        <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">The Contact List</h5>
+                        <a href="/create" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                        Add New
+                    </a>
                     </div>
                     <div class="flow-root">
-                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-                            <Contact id="1" name="testing name" email="test@test.in" phone="1234567890" listUpdater={setContacts} />
+                        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+                            {/* <Contact id="1" name="testing name" email="test@test.in" phone="1234567890" listUpdater={setContacts} />
                             <Contact id="2" name="testing name2" email="test@test.in" phone="1234567890" />
-                            <Contact id="3" name="testing name3" email="test@test.in" phone="1234567890" />
+                            <Contact id="3" name="testing name3" email="test@test.in" phone="1234567890" /> */}
                             {/* <li class="py-3 sm:py-4">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
@@ -78,6 +128,15 @@ const Contacts = () => {
                                 </div>
                             </div>
                         </li> */}
+
+                            {
+                                contacts?.map((e) => (
+                                    <Contact key={e._id} id={e._id} name={e.text} email={e.email} phone={e.PhNumber} updateContact={updateContact} deleteContact={deleteContact}>
+                                        {/* {console.log(e)} */}
+                                    </Contact>
+                                ))
+                            }
+
                         </ul>
                     </div>
                 </div>
